@@ -1,39 +1,50 @@
+from email.charset import QP
 import sys
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QApplication,QMainWindow,QLabel
+from PyQt6.QtWidgets import QWidget,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout
 from PyQt6.QtGui import QIcon,QFont,QPixmap
 
+class LoginWindow(QWidget):
+   def __init__(self):
+    super().__init__()
+    self.setWindowTitle("Login")
 class MainWindow(QMainWindow):
     def __init__(self):
      super().__init__()
      self.setWindowTitle("My first Quiz Game")
      self.setGeometry(0,0,500,500)
      self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
+     self.setStyleSheet("background-color: white;")
 
      label=QLabel(self)
-     label.setGeometry(0,0,200,200);
      
      pixmap = QPixmap("Assets/Quiz.jpg")
      label.setPixmap(pixmap)
-     
+
+     widget= QWidget()
+     self.setCentralWidget(widget)
+
      label.setScaledContents(True);
-     label.setGeometry((self.width() - label.width() )// 2,
-                       (self.height() - label.height() )//2,
-                       label.width(),label.height())
-"""
-    This "window" is a QWidget. If it has no parent, it
-    will appear as a free-floating window as we want.
-    
-     label = QLabel("Hello",self)
-     label.setFont(QFont("Arial",40))
-     label.setGeometry(0,0,500,100)
 
-     label.setStyleSheet("color:blue;" 
-     "background-color:#6fdcf7;" 
-     "font-weight:bold;" )
+     self.button  = QPushButton("Start Playing",self);  
+     self.button.setStyleSheet("font-size:20px;" 
+     "border-radius: 8px;"
+     "border:1px solid;"
+     "background-color: #4CAF50;" 
+     "font-family:Roboto;")
+     self.button.clicked.connect(self.on_click)
+     
+     layout = QVBoxLayout()
+     
+     layout.addWidget(label,alignment=Qt.AlignmentFlag.AlignCenter)
+     layout.addWidget(self.button,alignment=Qt.AlignmentFlag.AlignAbsolute)
+        
+     widget.setLayout(layout)
+     self.setCentralWidget(widget)
 
-     label.setAlignment(Qt.AlignmentFlag.AlignHCenter) #Vertical Alignment
-"""
+    def on_click(self):
+       self.w = LoginWindow()
+       self.w.show()
 
 app = QApplication(sys.argv)
 window = MainWindow()

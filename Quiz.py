@@ -1,56 +1,72 @@
 from email.charset import QP
 import sys
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt,QDir
 from PyQt6.QtWidgets import QFormLayout, QWidget,QLineEdit,QGridLayout,QMessageBox,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout
-from PyQt6.QtGui import QIcon,QFont,QPixmap
+from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
 
-class LoginWindow(QMainWindow):
+def button_styling(button):
+        button.setStyleSheet("""
+            QPushButton {
+                background-color: #3EB2FD;
+                background-image: linear-gradient(1deg, #4F58FD, #149BF3 99%);
+                border-radius: 100px;
+                border-width: 0;
+                color: white;
+                border: none;
+                padding: 10px;
+                font-weight: bold;
+                border-radius: 5px;
+                font-size: 14px;
+                margin-top: 10px;
+            }
+        """)
+        button.setCursor(Qt.CursorShape.PointingHandCursor)
+class LoginWindow(QWidget):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle("Login")
+        self.setFixedSize(500,500)  # Optional: fixed size
+        self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
 
-        # Set the window properties (title and initial size)
-        self.setWindowTitle("Login Form")
-        self.setGeometry(0,0,300, 250)  # (x, y, width, height)
+        layout = QVBoxLayout()
+        QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
+        QFontDatabase.addApplicationFont("Assets/static/Montserrat-Medium.ttf")
 
-        # Create a central widget for the main window
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
+        self.title = QLabel("Welcome")
+        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.title.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 15px;")
 
-        # Create a QFormLayout to arrange the widgets
-        form_layout = QFormLayout()
-
-        # Create QLabel and QLineEdit widgets for username
-        username_label = QLabel("Username:")
         self.username_field = QLineEdit()
+        self.username_field.setPlaceholderText("Username")
 
-        # Create QLabel and QLineEdit widgets for password
-        password_label = QLabel("Password:")
         self.password_field = QLineEdit()
+        self.password_field.setPlaceholderText("Password")
         self.password_field.setEchoMode(QLineEdit.EchoMode.Password)
 
+        self.login_button = QPushButton("Login")
+        button_styling(self.login_button)
 
-        # Create a QPushButton for login
-        login_button = QPushButton("Login")
-        login_button.clicked.connect(self.login)
+        layout.addWidget(self.title)
+        layout.addWidget(self.username_field)
+        layout.addWidget(self.password_field)
+        layout.addWidget(self.login_button)
 
-        # Add widgets to the form layout
-        form_layout.addRow(username_label, self.username_field)
-        form_layout.addRow(password_label, self.password_field)
-        form_layout.addRow(login_button)
 
-        # Set the layout for the central widget
-        central_widget.setLayout(form_layout)
+        self.setLayout(layout)
 
-    def login(self):
-        # Retrieve the username and password entered by the user
-        username = self.username_field.text()
-        password = self.password_field.text()
-
-        # Check if the username and password are valid (for demonstration purposes)
-        if username == "admin" and password == "admin":
-            QMessageBox.information(self, "Login Successful", "Welcome, " + username + "!")
-        else:
-            QMessageBox.warning(self, "Login Failed", "Invalid username or password. Please try again.")
+        self.setStyleSheet("""
+            QWidget {
+                           font-size:15px;
+                           background-color:#f2f2f2;
+                           }
+            QLineEdit { 
+                           background-color:white;
+                           font-family: 'Roboto', sans-serif;
+                           border: 1px solid #ccc;
+                           border-radius:5px;
+                           font-size:14px;
+            }
+                           """)
 class MainWindow(QMainWindow):
     def __init__(self):
      super().__init__()
@@ -59,8 +75,10 @@ class MainWindow(QMainWindow):
      self.initUI()
 
     def initUI(self):
-     self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
-     self.setStyleSheet("background-color: white;")
+     self.setWindowIcon(QIcon("Assets/quiz.jpg"))
+     self.setStyleSheet("background-color: white;" 
+                        "border: 1px solid #ccc;"
+                        "border-radius:10px;")
      label=QLabel(self)
      
      pixmap = QPixmap("Assets/Quiz.jpg")
@@ -72,11 +90,7 @@ class MainWindow(QMainWindow):
      label.setScaledContents(True);
 
      self.button  = QPushButton("Start Playing",self);  
-     self.button.setStyleSheet("font-size:20px;" 
-     "border-radius: 8px;"
-     "border:1px solid;"
-     "background-color: #4CAF50;" 
-     "font-family:Roboto;")
+     button_styling(self.button)
      self.button.clicked.connect(self.on_click)
      
      layout = QVBoxLayout()
@@ -93,6 +107,6 @@ class MainWindow(QMainWindow):
 
 if __name__=='__main__':
  app = QApplication(sys.argv)
- window = LoginWindow()
+ window = MainWindow()
  window.show()
  app.exec()

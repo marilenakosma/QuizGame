@@ -3,7 +3,40 @@ import sys
 from PyQt6.QtCore import Qt,QDir
 from PyQt6.QtWidgets import QFormLayout, QWidget,QLineEdit,QGridLayout,QMessageBox,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout
 from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
+from db import add_user,get_user,user_exists
+from urllib.request import urlopen
+import json
+import pandas as pd
+import random
 
+with urlopen("https://opentdb.com/api.php?amount=50&category=14&difficulty=medium&type=multiple") as webpage:
+   data = json.loads(webpage.read().decode())
+   df= pd.DataFrame(data['results'])
+   print(df.head())
+
+def preload_data():
+   question = df["question"][0]
+   correct=df["correct_answer"][0]
+   wrong = df["incorrect_answers"][0]
+
+   parameters["question"].append(question)
+   parameters["question"].append(correct)
+   all_answers= wrong + [correct]
+   random.shuffle(all_answers)
+   parameters["answer1"].append(all_answers[0])
+   parameters["answer2"].append(all_answers[1])
+   parameters["answer3"].append(all_answers[2])
+   parameters["answer4"].append(all_answers[3])
+   print(all_answers)
+
+parameters={"question: []",
+            "answer1: []",
+            "answer2: []",
+            "answer3: []",
+            "answer4: []",
+            "correct:[]"}
+
+preload_data
 def button_styling(button):
         button.setStyleSheet("""
             QPushButton {
@@ -21,52 +54,6 @@ def button_styling(button):
             }
         """)
         button.setCursor(Qt.CursorShape.PointingHandCursor)
-class LoginWindow(QWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Login")
-        self.setFixedSize(500,500)  # Optional: fixed size
-        self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
-
-        layout = QVBoxLayout()
-        QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
-        QFontDatabase.addApplicationFont("Assets/static/Montserrat-Medium.ttf")
-
-        self.title = QLabel("Welcome")
-        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.title.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 15px;")
-
-        self.username_field = QLineEdit()
-        self.username_field.setPlaceholderText("Username")
-
-        self.password_field = QLineEdit()
-        self.password_field.setPlaceholderText("Password")
-        self.password_field.setEchoMode(QLineEdit.EchoMode.Password)
-
-        self.login_button = QPushButton("Login")
-        button_styling(self.login_button)
-
-        layout.addWidget(self.title)
-        layout.addWidget(self.username_field)
-        layout.addWidget(self.password_field)
-        layout.addWidget(self.login_button)
-
-
-        self.setLayout(layout)
-
-        self.setStyleSheet("""
-            QWidget {
-                           font-size:15px;
-                           background-color:#f2f2f2;
-                           }
-            QLineEdit { 
-                           background-color:white;
-                           font-family: 'Roboto', sans-serif;
-                           border: 1px solid #ccc;
-                           border-radius:5px;
-                           font-size:14px;
-            }
-                           """)
 class MainWindow(QMainWindow):
     def __init__(self):
      super().__init__()
@@ -105,8 +92,139 @@ class MainWindow(QMainWindow):
        self.w = LoginWindow()
        self.w.show()
 
+class LoginWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Login")
+        self.setFixedSize(500,500)  # Optional: fixed size
+        self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
+
+        layout = QVBoxLayout()
+        QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
+        QFontDatabase.addApplicationFont("Assets/static/Montserrat-Medium.ttf")
+
+        self.title = QLabel("Welcome")
+        self.title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.title.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 15px;")
+
+        self.username_field = QLineEdit()
+        self.username_field.setPlaceholderText("Username")
+
+        self.password_field = QLineEdit()
+        self.password_field.setPlaceholderText("Password")
+        self.password_field.setEchoMode(QLineEdit.EchoMode.Password)
+
+        self.login_button = QPushButton("Login")
+        button_styling(self.login_button)
+        #self.login_button.clicked.connect(self.login_button)
+
+        layout.addWidget(self.title)
+        layout.addWidget(self.username_field)
+        layout.addWidget(self.password_field)
+        layout.addWidget(self.login_button)
+
+        self.setLayout(layout)
+
+        self.setStyleSheet("""
+            QWidget {
+                           font-size:15px;
+                           background-color:#f2f2f2;
+                           }
+            QLineEdit { 
+                           background-color:white;
+                           font-family: 'Roboto', sans-serif;
+                           border: 1px solid #ccc;
+                           border-radius:5px;
+                           font-size:14px;
+            }
+                           """)
+        
+        def login(self):
+           username = self.username_input.text()
+           password = self.password_input.text()
+
+           user = get_user(username)
+           if user and user['password'] == password:
+              QMessageBox.information(self,"Success","Login successful!")
+           else:
+              QMessageBox.warning(self,"Error","Invalid username or password")
+
+class MainMenuWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Select Quiz Category")
+        self.setStyleSheet("background-color: #F4F6FC;")
+        QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
+
+        layout = QVBoxLayout()
+        layout.setSpacing(20)
+        layout.setAlignment(Qt.AlignmentFlag.AlignTop)
+
+        # 🔹 Header
+        header = QLabel("Hello,user")
+        header.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 15px;")
+        header.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(header)
+
+        # 🔹 Category Buttons (Card Style)
+        grid = QGridLayout()
+        grid.setSpacing(15)
+
+        categories = ["General", "Science", "Math", "History"]
+        for i, name in enumerate(categories):
+            btn = QPushButton(name)
+            btn.setFixedSize(200,200)
+            btn.setStyleSheet("""
+                QPushButton {
+                    font-family: 'Roboto', sans-serif;
+                    background-color: white;
+                    border-radius: 15px;
+                    border: 2px solid #E0E0E0;
+                    font-size: 16px;
+                }
+                QPushButton:hover {
+                    background-color: #EAF1FF;
+                    border: 2px solid #3E8EED;
+                }
+            """)
+            grid.addWidget(btn, i // 2, i % 2)
+
+        layout.addLayout(grid)
+
+        # 🔹 Navigation Buttons (optional)
+        nav_layout = QHBoxLayout()
+        prev_btn = QPushButton("◀ Prev")
+        next_btn = QPushButton("Next ▶")
+        for btn in (prev_btn, next_btn):
+            btn.setStyleSheet("padding: 8px; font-size: 14px;")
+            
+
+        nav_layout.addWidget(prev_btn)
+        nav_layout.addStretch()
+        nav_layout.addWidget(next_btn)
+        layout.addLayout(nav_layout)
+
+        # 🔹 Bottom Start/Select Button
+        select_btn = QPushButton("Start Quiz")
+        select_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #3E8EED;
+                color: white;
+                padding: 12px;
+                border-radius: 20px;
+                font-size: 16px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #256FD1;
+            }
+        """)
+        layout.addWidget(select_btn, alignment=Qt.AlignmentFlag.AlignCenter)
+
+        self.setLayout(layout)
+   
 if __name__=='__main__':
  app = QApplication(sys.argv)
- window = MainWindow()
+ window = MainMenuWindow()
  window.show()
  app.exec()

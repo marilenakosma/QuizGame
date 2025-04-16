@@ -3,11 +3,13 @@ import sys
 from PyQt6.QtCore import Qt,QDir
 from PyQt6.QtWidgets import QFormLayout, QWidget,QLineEdit,QGridLayout,QMessageBox,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout
 from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
-from db import add_user,get_user,user_exists
+from db import save_user,authenticate_user
 from urllib.request import urlopen
 import json
 import pandas as pd
 import random
+import html
+from QuizWindow import QuizWindow
 
 with urlopen("https://opentdb.com/api.php?amount=50&category=14&difficulty=medium&type=multiple") as webpage:
    data = json.loads(webpage.read().decode())
@@ -113,16 +115,25 @@ class LoginWindow(QWidget):
         self.password_field = QLineEdit()
         self.password_field.setPlaceholderText("Password")
         self.password_field.setEchoMode(QLineEdit.EchoMode.Password)
+       
+        btn_layout = QHBoxLayout()
 
         self.login_button = QPushButton("Login")
         button_styling(self.login_button)
-        #self.login_button.clicked.connect(self.login_button)
+        
+        self.register_button = QPushButton("Register")
+        button_styling(self.register_button)
+
+        self.login_button.clicked.connect(self.login)
+        self.register_button.clicked.connect(self.register)
 
         layout.addWidget(self.title)
         layout.addWidget(self.username_field)
         layout.addWidget(self.password_field)
-        layout.addWidget(self.login_button)
+        btn_layout.addWidget(self.login_button)
+        btn_layout.addWidget(self.register_button)
 
+        layout.addLayout(btn_layout)
         self.setLayout(layout)
 
         self.setStyleSheet("""
@@ -139,34 +150,45 @@ class LoginWindow(QWidget):
             }
                            """)
         
-        def login(self):
-           username = self.username_input.text()
-           password = self.password_input.text()
-
-           user = get_user(username)
-           if user and user['password'] == password:
-              QMessageBox.information(self,"Success","Login successful!")
+    def login(self):
+           username = self.username_field.text()
+           password = self.password_field.text()     
+           if authenticate_user(username,password):
+              QMessageBox.information(self, "Login Successful", f"Welcome, {username}!")
+              self.open_main_window(username)
            else:
-              QMessageBox.warning(self,"Error","Invalid username or password")
+              QMessageBox.warning(self, "Login Failed", "Invalid username or password.")
 
+    def register(self):
+           username = self.username_field.text()
+           password = self.password_field.text()     
+           if save_user(username,password):
+              QMessageBox.information(self, "Successful Registration", f"Welcome, {username}!")
+           else:
+              QMessageBox.warning(self, "Error", "Username already exists.")
+    
+    def open_main_window(self,username):
+        self.main = MainMenuWindow(username)
+        self.main.show()
+        self.close()
 class MainMenuWindow(QWidget):
-    def __init__(self):
+    def __init__(self,username):
         super().__init__()
+        self.username = username
         self.setWindowTitle("Select Quiz Category")
         self.setStyleSheet("background-color: #F4F6FC;")
         QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
+        self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
 
         layout = QVBoxLayout()
         layout.setSpacing(20)
         layout.setAlignment(Qt.AlignmentFlag.AlignTop)
-
-        # 🔹 Header
-        header = QLabel("Hello,user")
+       
+        header = QLabel(f"Welcome, {self.username}!")
         header.setStyleSheet("font-size: 20px; font-weight: bold; margin-bottom: 15px;")
         header.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(header)
 
-        # 🔹 Category Buttons (Card Style)
         grid = QGridLayout()
         grid.setSpacing(15)
 
@@ -174,6 +196,7 @@ class MainMenuWindow(QWidget):
         for i, name in enumerate(categories):
             btn = QPushButton(name)
             btn.setFixedSize(200,200)
+            btn.clicked.connect(lambda checked,category=name:self.open_quiz(category))
             btn.setStyleSheet("""
                 QPushButton {
                     font-family: 'Roboto', sans-serif;
@@ -198,7 +221,6 @@ class MainMenuWindow(QWidget):
         for btn in (prev_btn, next_btn):
             btn.setStyleSheet("padding: 8px; font-size: 14px;")
             
-
         nav_layout.addWidget(prev_btn)
         nav_layout.addStretch()
         nav_layout.addWidget(next_btn)
@@ -222,9 +244,14 @@ class MainMenuWindow(QWidget):
         layout.addWidget(select_btn, alignment=Qt.AlignmentFlag.AlignCenter)
 
         self.setLayout(layout)
-   
+
+    def open_quiz(self, category):
+     self.quiz_window = QuizWindow(category)
+     self.quiz_window.show()
+     self.close()
+
 if __name__=='__main__':
  app = QApplication(sys.argv)
- window = MainMenuWindow()
+ window = LoginWindow()
  window.show()
  app.exec()

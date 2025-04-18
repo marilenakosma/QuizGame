@@ -6,14 +6,15 @@ from PyQt6.QtCore import Qt,QDir
 from db import save_score
 
 class QuizWindow(QWidget):
-    def __init__(self,category,username):
+    def __init__(self,category,username,difficulty):
         super().__init__()
-        self.username = username
         self.setWindowTitle(f"{category} Quiz")
         self.setFixedSize(800, 600)  # or whatever size you want
         self.layout = QVBoxLayout()  # ✅ right
         self.setLayout(self.layout)
         
+        self.username = username
+        self.difficulty = difficulty
         self.category = category
         self.questions = []
         self.current_question = 0
@@ -91,8 +92,9 @@ class QuizWindow(QWidget):
     )
      
      if result == QMessageBox.StandardButton.Yes:
-        self.current_question = 0
-        self.score = 0
-        self.show_question()
+        pass
+        #self.main = MainMenuWindow(self.username)
+        #self.main.show()
+        #self.close()
      else:
         self.close()  # Or go back to main menu, etc.

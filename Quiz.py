@@ -11,34 +11,6 @@ import random
 import html
 from QuizWindow import QuizWindow
 
-with urlopen("https://opentdb.com/api.php?amount=50&category=14&difficulty=medium&type=multiple") as webpage:
-   data = json.loads(webpage.read().decode())
-   df= pd.DataFrame(data['results'])
-   print(df.head())
-
-def preload_data():
-   question = df["question"][0]
-   correct=df["correct_answer"][0]
-   wrong = df["incorrect_answers"][0]
-
-   parameters["question"].append(question)
-   parameters["question"].append(correct)
-   all_answers= wrong + [correct]
-   random.shuffle(all_answers)
-   parameters["answer1"].append(all_answers[0])
-   parameters["answer2"].append(all_answers[1])
-   parameters["answer3"].append(all_answers[2])
-   parameters["answer4"].append(all_answers[3])
-   print(all_answers)
-
-parameters={"question: []",
-            "answer1: []",
-            "answer2: []",
-            "answer3: []",
-            "answer4: []",
-            "correct:[]"}
-
-preload_data
 def button_styling(button):
         button.setStyleSheet("""
             QPushButton {
@@ -100,7 +72,9 @@ class LoginWindow(QWidget):
         self.setWindowTitle("Login")
         self.setFixedSize(500,500)  # Optional: fixed size
         self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
+        self.initUI()
 
+    def initUI(self):
         layout = QVBoxLayout()
         QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
         QFontDatabase.addApplicationFont("Assets/static/Montserrat-Medium.ttf")
@@ -196,7 +170,7 @@ class MainMenuWindow(QWidget):
         for i, name in enumerate(categories):
             btn = QPushButton(name)
             btn.setFixedSize(200,200)
-            btn.clicked.connect(lambda checked,category=name:self.open_quiz(category))
+            btn.clicked.connect(lambda _, cat=name: self.open_quiz(cat))
             btn.setStyleSheet("""
                 QPushButton {
                     font-family: 'Roboto', sans-serif;
@@ -246,9 +220,11 @@ class MainMenuWindow(QWidget):
         self.setLayout(layout)
 
     def open_quiz(self, category):
-     self.quiz_window = QuizWindow(category)
+     print(f"[DEBUG] Opening quiz for {category}")  # Optional
+     self.quiz_window = QuizWindow(category,self.username)
      self.quiz_window.show()
      self.close()
+
 
 if __name__=='__main__':
  app = QApplication(sys.argv)

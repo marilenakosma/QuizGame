@@ -1,6 +1,6 @@
 from email.charset import QP
 import sys
-from PyQt6.QtCore import Qt,QDir
+from PyQt6.QtCore import QSize, Qt,QDir
 from PyQt6.QtWidgets import QFormLayout, QWidget,QLineEdit,QGridLayout,QMessageBox,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout
 from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
 from db import save_user,authenticate_user
@@ -65,6 +65,7 @@ class MainWindow(QMainWindow):
     def on_click(self):
        self.w = LoginWindow()
        self.w.show()
+       self.close()
 
 class LoginWindow(QWidget):
     def __init__(self):
@@ -165,11 +166,21 @@ class MainMenuWindow(QWidget):
 
         grid = QGridLayout()
         grid.setSpacing(15)
-
+        icons = {
+            "General":"Assets/general.png",
+             "Science":"Assets/science.png",
+             "Math":"Assets/math.jpg",
+             "History":"Assets/history.png",
+        }
         categories = ["General", "Science", "Math", "History"]
         for i, name in enumerate(categories):
             btn = QPushButton(name)
             btn.setFixedSize(200,200)
+
+            if name in icons:
+              btn.setIcon(QIcon(icons[name]))
+              btn.setIconSize(QSize(100, 100))
+
             btn.clicked.connect(lambda _, cat=name: self.open_quiz(cat))
             btn.setStyleSheet("""
                 QPushButton {
@@ -178,6 +189,7 @@ class MainMenuWindow(QWidget):
                     border-radius: 15px;
                     border: 2px solid #E0E0E0;
                     font-size: 16px;
+                    text-align:center;
                 }
                 QPushButton:hover {
                     background-color: #EAF1FF;
@@ -187,38 +199,8 @@ class MainMenuWindow(QWidget):
             grid.addWidget(btn, i // 2, i % 2)
 
         layout.addLayout(grid)
-
-        # 🔹 Navigation Buttons (optional)
-        nav_layout = QHBoxLayout()
-        prev_btn = QPushButton("◀ Prev")
-        next_btn = QPushButton("Next ▶")
-        for btn in (prev_btn, next_btn):
-            btn.setStyleSheet("padding: 8px; font-size: 14px;")
-            
-        nav_layout.addWidget(prev_btn)
-        nav_layout.addStretch()
-        nav_layout.addWidget(next_btn)
-        layout.addLayout(nav_layout)
-
-        # 🔹 Bottom Start/Select Button
-        select_btn = QPushButton("Start Quiz")
-        select_btn.setStyleSheet("""
-            QPushButton {
-                background-color: #3E8EED;
-                color: white;
-                padding: 12px;
-                border-radius: 20px;
-                font-size: 16px;
-                font-weight: bold;
-            }
-            QPushButton:hover {
-                background-color: #256FD1;
-            }
-        """)
-        layout.addWidget(select_btn, alignment=Qt.AlignmentFlag.AlignCenter)
-
         self.setLayout(layout)
-
+        
     def open_quiz(self, category):
      print(f"[DEBUG] Opening quiz for {category}")  # Optional
      self.quiz_window = QuizWindow(category,self.username)
@@ -228,6 +210,8 @@ class MainMenuWindow(QWidget):
 
 if __name__=='__main__':
  app = QApplication(sys.argv)
- window = LoginWindow()
+ window = MainMenuWindow(username="marilena")
+ #window = MainWindow()
+ window.setWindowIcon(QIcon("Assets/Quiz.jpg")) 
  window.show()
  app.exec()

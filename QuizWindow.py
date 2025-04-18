@@ -76,6 +76,7 @@ class QuizWindow(QWidget):
     def check_answer(self,selected,correct):
         if selected == correct:
            print("Correct!")
+           self.score += 1
         else:
            print("Incorrect!")
 

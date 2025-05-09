@@ -171,17 +171,16 @@ class QuizWindow(QWidget):
 
     def check_answer(self,selected,correct):
         if selected == correct:
-           #self.feedback_label.setText("Correct!")
            self.score += 1
         else:
-           print("Incorrect!")
+           pass
         
         self.current_question += 1
         self.progress_bar.setValue(self.current_question)
         self.score_label.setText(f"Score: {self.score}")
         self.show_question()
     
-    def arcade_button_style(self):
+    def score_screen_button_style(self):
       return """
         QPushButton {
             font-family: 'Montserrat', sans-serif;
@@ -193,17 +192,25 @@ class QuizWindow(QWidget):
             font-size: 18px;
         }
         QPushButton:hover {
-            background-color: #00AAAA;
+            background-color: #5EC6FF;
             border: 2px solid #FF00FF;
             color: white;
         }
     """
     
     def restart_quiz(self):
+      self.clear_layout(self.layout)
+        
       self.current_question = 0
       self.score = 0
       self.progress_bar.setValue(0)
       self.score_label.setText("Score: 0")
+      
+      self.layout.addWidget(self.progress_bar)
+      self.layout.addWidget(self.score_label)
+      self.layout.addLayout(self.question_layout)
+
+    # Reload questions
       self.load_questions()
       
     def clear_layout(self, layout):
@@ -232,13 +239,13 @@ class QuizWindow(QWidget):
      
      retry_btn = QPushButton("Play Again")
      retry_btn.clicked.connect(self.restart_quiz)
-     retry_btn.setStyleSheet(self.arcade_button_style())
+     retry_btn.setStyleSheet(self.score_screen_button_style())
      self.layout.addWidget(retry_btn)
 
     # Exit Button
      exit_btn = QPushButton("Exit")
      exit_btn.clicked.connect(self.close)
-     exit_btn.setStyleSheet(self.arcade_button_style())
+     exit_btn.setStyleSheet(self.score_screen_button_style())
      self.layout.addWidget(exit_btn)
     
     

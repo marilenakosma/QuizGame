@@ -15,9 +15,7 @@ class MainWindow(QMainWindow):
 
     def initUI(self):
      self.setWindowIcon(QIcon("Assets/quiz.jpg"))
-     self.setStyleSheet("background-color: white;" 
-                        "border: 1px solid #ccc;"
-                        "border-radius:10px;")
+     self.setStyleSheet("background-color: white;")
      label=QLabel(self)
      
      pixmap = QPixmap("Assets/Quiz.jpg")

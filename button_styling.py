@@ -27,5 +27,10 @@ def button_styling(button):
                 font-size: 14px;
                 margin-top: 10px;
             }
+            QPushButton:hover {
+            background-color: #5EC6FF;
+            border: 2px solid #FF00FF;
+            color: white;
+        }
         """)
         button.setCursor(Qt.CursorShape.PointingHandCursor)

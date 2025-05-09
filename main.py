@@ -6,8 +6,8 @@ from QuizWindow import QuizWindow  # Entry point from MainMenuWindow
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    #window = MainMenuWindow(username="marilena")
-    window = QuizWindow(category="math",username="marilena",difficulty="easy")
+    main_menu = MainMenuWindow(username="marilena")
+    window = QuizWindow(category="math",username="marilena",difficulty="easy", main_menu=main_menu)
    # window = MainWindow()
     window.show()  # Show main menu window
     sys.exit(app.exec())  # Start the app

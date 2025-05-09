@@ -8,11 +8,12 @@ from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
 from db import save_score
 
 class QuizWindow(QWidget):
-    def __init__(self, category, username, difficulty):
+    def __init__(self, category, username, difficulty,main_menu):
         super().__init__()
         self.category = category
         self.username = username
         self.difficulty = difficulty
+        self.main_menu = main_menu
         self.current_question = 0
         self.score = 0
         self.questions = []
@@ -199,19 +200,8 @@ class QuizWindow(QWidget):
     """
     
     def restart_quiz(self):
-      self.clear_layout(self.layout)
-        
-      self.current_question = 0
-      self.score = 0
-      self.progress_bar.setValue(0)
-      self.score_label.setText("Score: 0")
-      
-      self.layout.addWidget(self.progress_bar)
-      self.layout.addWidget(self.score_label)
-      self.layout.addLayout(self.question_layout)
-
-    # Reload questions
-      self.load_questions()
+      self.close()
+      self.main_menu.show()
       
     def clear_layout(self, layout):
      while layout.count():

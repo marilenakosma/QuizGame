@@ -40,7 +40,7 @@ class QuizWindow(QWidget):
         font-family: 'Montserrat', sans-serif;
         font-size: 14px;
         color: #fff;
-        background-color: #365880;  /* Dark purple bg */
+        background-color: #3EB2FD;
     }
 
     QProgressBar::chunk {

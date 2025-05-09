@@ -99,6 +99,6 @@ class MainMenuWindow(QWidget):
         
     def open_quiz(self, category):
      difficulty = self.difficulty_combo.currentText().lower()
-     self.quiz_window = QuizWindow(category,self.username,difficulty)
+     self.quiz_window = QuizWindow(category,self.username,difficulty,self)
      self.quiz_window.show()
      self.close()

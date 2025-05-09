@@ -54,7 +54,7 @@ class LoginWindow(QWidget):
         self.setStyleSheet("""
             QWidget {
                            font-size:15px;
-                           background-color:#f2f2f2;
+                           background-color:#EAF1FF;
                            }
             QLineEdit { 
                            background-color:white;

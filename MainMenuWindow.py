@@ -1,5 +1,3 @@
-from email.charset import QP
-import sys
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QComboBox, QWidget,QLabel,QPushButton,QHBoxLayout,QVBoxLayout,QSpacerItem, QSizePolicy
 from PyQt6.QtGui import QIcon,QFontDatabase
@@ -32,10 +30,8 @@ class MainMenuWindow(QWidget):
         category_header.setStyleSheet("font-family:Montserrat; font-size: 16px; margin-bottom: 15px;")
         layout.addWidget(header)
     
-
         self.difficulty_combo = QComboBox()
         self.difficulty_combo.addItems(["Easy", "Medium", "Hard"])
-
 
         card_layout = QHBoxLayout()
         card_layout.setSpacing(20)
@@ -72,7 +68,6 @@ class MainMenuWindow(QWidget):
                 }
             """)
             card_layout.addWidget(btn)
-            #grid.addWidget(btn, i // 2, i % 2)
 
         self.difficulty_combo.setStyleSheet("""
             QComboBox {
@@ -86,7 +81,6 @@ class MainMenuWindow(QWidget):
                 border: 1px solid #3E8EED;
             }
         """)
-        #layout.addLayout(grid)
         spacer = QSpacerItem(0,20,QSizePolicy.Policy.Minimum,QSizePolicy.Policy.Fixed)
 
         layout.addWidget(difficulty, alignment=Qt.AlignmentFlag.AlignCenter)

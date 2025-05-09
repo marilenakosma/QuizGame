@@ -185,7 +185,7 @@ class QuizWindow(QWidget):
       return """
         QPushButton {
             font-family: 'Montserrat', sans-serif;
-            background-color: #3EB2FD;;
+            background-color: #3EB2FD;
             color: black;
             border: 2px solid white;
             border-radius: 15px;

@@ -11,7 +11,7 @@ class LoginWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Login")
-        self.setFixedSize(500,500)  # Optional: fixed size
+        self.setFixedSize(400,400)
         self.setWindowIcon(QIcon("Assets/Quiz.jpg"))
         self.initUI()
 

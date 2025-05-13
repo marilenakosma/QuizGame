@@ -19,7 +19,7 @@ class QuizWindow(QWidget):
         self.questions = []
 
         self.setWindowTitle("Quiz Game")
-        self.setGeometry(0, 0, 800, 600)
+        self.setFixedSize(800, 600)
         self.setStyleSheet("background-color: #F4F6FC;")
         QFontDatabase.addApplicationFont("Assets/static/Roboto-Light.ttf")
         QFontDatabase.addApplicationFont("Assets/static/Montserrat-Medium.ttf")

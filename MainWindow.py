@@ -10,7 +10,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
      super().__init__()
      self.setWindowTitle("My first Quiz Game")
-     self.setGeometry(0,0,600,500)
+     self.setFixedSize(500,500)
      self.initUI()
 
     def initUI(self):

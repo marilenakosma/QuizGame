@@ -1,8 +1,6 @@
-from email.charset import QP
-import sys
-from PyQt6.QtCore import QSize, Qt,QDir
-from PyQt6.QtWidgets import QComboBox, QFormLayout, QWidget,QLineEdit,QGridLayout,QMessageBox,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout,QSpacerItem, QSizePolicy
-from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import  QWidget,QLineEdit,QMessageBox,QLabel,QPushButton,QHBoxLayout,QVBoxLayout
+from PyQt6.QtGui import QIcon,QFontDatabase
 from db import save_user,authenticate_user
 from button_styling import button_styling
 from MainMenuWindow import MainMenuWindow

@@ -1,15 +1,4 @@
-from email.charset import QP
-import sys
-from PyQt6.QtCore import QSize, Qt,QDir
-from PyQt6.QtWidgets import QComboBox, QFormLayout, QWidget,QLineEdit,QGridLayout,QMessageBox,QApplication,QMainWindow,QLabel,QPushButton,QHBoxLayout,QVBoxLayout,QSpacerItem, QSizePolicy
-from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
-from db import save_user,authenticate_user
-from urllib.request import urlopen
-import json
-import pandas as pd
-import random
-import html
-from QuizWindow import QuizWindow
+from PyQt6.QtCore import Qt
 
 
 def button_styling(button):

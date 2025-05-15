@@ -2,9 +2,9 @@ import random
 from PyQt6.QtGui import QIcon
 import requests
 import html
-from PyQt6.QtWidgets import QMessageBox, QProgressBar, QWidget,QLabel,QVBoxLayout,QPushButton
+from PyQt6.QtWidgets import QProgressBar, QWidget,QLabel,QVBoxLayout,QPushButton
 from PyQt6.QtCore import Qt,QDir
-from PyQt6.QtGui import QIcon,QFont,QPixmap,QFontDatabase
+from PyQt6.QtGui import QIcon,QFontDatabase
 from db import save_score
 
 class QuizWindow(QWidget):

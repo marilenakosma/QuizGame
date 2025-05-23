@@ -1,5 +1,21 @@
-This project is an interactive desktop quiz application built with Python and PyQt6, using real-time questions from the Open Trivia Database.
+This project implements interactive desktop quiz application built with Python and PyQt6, using real-time questions from the Open Trivia Database.
 It features a modern UI, tracks scores, and allows users to select categories and difficulty levels.
 
+### Preview
+![Preview](Assets/Screenshots/collage.png)
+
+### Home Page
+![Main Menu](Assets/Screenshots/home_page.png)
+
+### Login Page
+![Login Page](Assets/Screenshots/login_screen.png)
+
 ### Main Menu
-![Main Menu](Assets/screenshots/main_menu.png)
+![Main Menu](Assets/Screenshots/main_menu.png)
+
+### Quiz Screen
+![Main Menu](Assets/Screenshots/quiz_screen.png)
+
+### Quiz Complete
+![Main Menu](Assets/Screenshots/quiz_complete.png)
+

@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
      self.setStyleSheet("background-color: white;")
      label=QLabel(self)
      
-     pixmap = QPixmap("Assets/Quiz.jpg")
+     pixmap = QPixmap("Assets/quiz.jpg")
      label.setPixmap(pixmap)
 
      widget= QWidget()

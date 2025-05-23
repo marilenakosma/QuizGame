@@ -28,7 +28,6 @@ class QuizWindow(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
 
-    # Progress bar
         self.progress_bar = QProgressBar()
         self.progress_bar.setMaximum(10)
         self.progress_bar.setValue(0)
@@ -56,7 +55,6 @@ class QuizWindow(QWidget):
         self.progress_bar.setFixedHeight(25)
         self.layout.addWidget(self.progress_bar)
 
-    # Score label
         self.score_label = QLabel("Score: 0")
         self.score_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.score_label.setStyleSheet("""
@@ -116,7 +114,6 @@ class QuizWindow(QWidget):
          if widget is not None:
            widget.deleteLater()
 
-
      question_data = self.questions[self.current_question]
      question = html.unescape(question_data["question"])
 
@@ -124,8 +121,7 @@ class QuizWindow(QWidget):
      incorrect = [html.unescape(ans) for ans in question_data["incorrect_answers"]]
      options = incorrect + [correct]
      random.shuffle(options)
-     
-
+    
      label = QLabel(question)
      label.setWordWrap(True)
      label.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -232,7 +228,6 @@ class QuizWindow(QWidget):
      retry_btn.setStyleSheet(self.score_screen_button_style())
      self.layout.addWidget(retry_btn)
 
-    # Exit Button
      exit_btn = QPushButton("Exit")
      exit_btn.clicked.connect(self.close)
      exit_btn.setStyleSheet(self.score_screen_button_style())

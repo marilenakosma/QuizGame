@@ -5,7 +5,7 @@ It features a modern UI, tracks scores, and allows users to select categories an
 
 ## 🧭 Technologies Used
 
-- **Python/PyQT6*** - UI Components
+- **Python/PyQT6** - UI Components
 - **TinyDB**  – Database Management
 - **Open Trivia Database** - Questions
 

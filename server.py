@@ -4,7 +4,6 @@ from db import get_scores,save_score
 app = Flask(__name__)
 
 @app.route('/scores/<username>', methods=['GET'])
-
 def fetch_scores(username):
     return jsonify(get_scores(username))
 

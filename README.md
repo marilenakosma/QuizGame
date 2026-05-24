@@ -1,7 +1,7 @@
 
 # Quiz Game
 
-This project implements interactive desktop quiz application built with Python,PyQt6 and TinyDB, using real-time questions from the Open Trivia Database.
+This project implements an interactive desktop quiz application built with Python, PyQt6, and TinyDB, utilizing a Flask REST API service for retrieving player statistics and scores.
 
 ---
 
@@ -12,6 +12,7 @@ This project implements interactive desktop quiz application built with Python,P
 *   **Category & Difficulty Filters:** Custom selection dashboards allowing easy, medium, or hard difficulties across categories: General Knowledge, Science & Nature, Mathematics, and History.
 *   **Aesthetic UI/UX:** Styled using PyQt6 stylesheets, responsive window transitions, smooth custom linear-gradient progress bars, and hover animations.
 *   **Scores History & Persistence:** Auto-saved score details mapped with timestamp, category, and username via a lightweight file-based TinyDB engine.
+*   **Flask REST API Server:** A decoupled local web server providing JSON endpoints to query and retrieve player statistics and high scores.
 
 ---
 
@@ -21,6 +22,7 @@ This project implements interactive desktop quiz application built with Python,P
 [![PyQt6](https://img.shields.io/badge/PyQt-6.x-41CD52?style=for-the-badge&logo=qt&logoColor=white)](https://www.qt.io/)
 [![Database](https://img.shields.io/badge/TinyDB-Local-FF6F00?style=for-the-badge&logo=databricks&logoColor=white)](https://tinydb.readthedocs.io/)
 [![API](https://img.shields.io/badge/OpenTDB-API-00B0FF?style=for-the-badge)](https://opentdb.com/)
+[![Flask](https://img.shields.io/badge/Flask-v3.x-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 
 ## Visual Preview
 ![Preview](Assets/Screenshots/collage.png)
@@ -39,6 +41,8 @@ graph TD
     E -->|Fetch Questions| API[OpenTriviaDB HTTP API]
     E -->|Submit Score| DB
     E -->|Finish Quiz / Play Again| D
+    
+    F[server.py: Flask REST API] -->|Query Scores / GET| DB
 ```
 
 ---
@@ -62,6 +66,7 @@ QuizGame/
 │
 ├── db.py                          # TinyDB setup and CRUD queries
 ├── button_styling.py              # Shared PyQt CSS styles for buttons
+├── server.py                      # Flask REST API server exposing score retrieval endpoints
 │
 ├── users.json                     # TinyDB local table: Registered accounts
 └── scores.json                    # TinyDB local table: High score logs
@@ -93,10 +98,15 @@ source .venv/bin/activate
 
 ### 3. Install Dependencies
 ```bash
-pip install PyQt6 requests tinydb
+pip install PyQt6 requests tinydb flask
 ```
 
-### 4. Run the Game
+### 4. Run the REST API Server
+```bash
+python server.py
+```
+
+### 5. Run the Game
 ```bash
 python main.py
 ```

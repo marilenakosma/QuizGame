@@ -9,6 +9,20 @@ It features a modern UI, tracks scores, and allows users to select categories an
 - **TinyDB**  – Database Management
 - **Open Trivia Database** - Questions
 
+## 🔧 Installation
+
+```bash
+git clone https://github.com/marilenakosma/QuizGame.git
+cd quizgame
+
+python -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+
+pip install PyQt6 requests tinydb
+
+python main.py
+
+```
 ---
 
 ### Preview

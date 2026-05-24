@@ -103,7 +103,7 @@ python main.py
 
 ---
 
-## 💾 Data Management Schema
+## Data Management Schema
 
 The project stores persistent data in flat JSON files managed via [TinyDB](https://tinydb.readthedocs.io/).
 
@@ -145,7 +145,7 @@ The project stores persistent data in flat JSON files managed via [TinyDB](https
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 

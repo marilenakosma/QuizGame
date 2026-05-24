@@ -22,10 +22,6 @@ This project implements interactive desktop quiz application built with Python,P
 [![Database](https://img.shields.io/badge/TinyDB-Local-FF6F00?style=for-the-badge&logo=databricks&logoColor=white)](https://tinydb.readthedocs.io/)
 [![API](https://img.shields.io/badge/OpenTDB-API-00B0FF?style=for-the-badge)](https://opentdb.com/)
 
-- **Python/PyQT6** - UI Components
-- **TinyDB**  – Database Management
-- **Open Trivia Database** - Questions
-
 ## Visual Preview
 ![Preview](Assets/Screenshots/collage.png)
 
